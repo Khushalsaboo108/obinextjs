@@ -1,30 +1,31 @@
-"use client"
+"use client";
 import { useState } from "react";
 import axios, { AxiosError } from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
-import { arrival } from "./api/arrivial/apiPath";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import Loading from "./Loading";
+import { contact } from "../api/arrivial/apiPath";
+import Loading from "../Loading";
 
 const LoginPage = () => {
   const router = useRouter();
   const [loginError, setLoginError] = useState("");
   const [loadingData, setLoadingData] = useState(false);
 
+  const sessionId = localStorage.getItem("sessionId") ?? "";
+  const cartitemId = localStorage.getItem("cartitemid") ?? "";
+
   const handleChange = async () => {
     try {
       setLoadingData(true);
-      const getdata = await arrival();
+      const getData = await contact(String(sessionId), Number(cartitemId));
+
       console.log(
-        "https://nigeriadev.reliablesoftjm.com/VIPERWS/login:",
-        getdata
+        "https://nigeriadev.reliablesoftjm.com/VIPERWS/setcontact:",
+        getData
       );
 
-      const sessionId = getdata.data.sessionid;
-
-      localStorage.setItem("sessionId", sessionId);
-      router.push("/arrivalBooking");
+      router.push("/payment");
     } catch (error) {
       setLoadingData(true);
       if (axios.isAxiosError(error)) {
@@ -42,8 +43,10 @@ const LoginPage = () => {
   return (
     <div className="text-center flex justify-center mt-4 ">
       <Loading isLoading={loadingData} />
+
       <button className=" bg-red-600 p-3" onClick={handleChange}>
-        Book arrival
+        {/* <Link href={"/arrivalBooking"}>Book arrival</Link> */}
+        Payment
       </button>
       {loginError && <p className="text-red-600">{loginError}</p>}
     </div>
