@@ -47,6 +47,18 @@ const ArrivalBookingPage = () => {
         "https://nigeriadev.reliablesoftjm.com/VIPERWS/getschedule:",
         getscheduleData
       );
+
+      const getData = await arrivialBooking(sessionId);
+      console.log(
+        "https://nigeriadev.reliablesoftjm.com/VIPERWS/reservecartitem:",
+        getData
+      );
+      const cartitemId = await getData.data.cartitemid;
+
+      await localStorage.setItem("cartitemid", cartitemId);
+
+      router.push("/registration");
+
     } catch (error) {
       setLoadingData(true);
       if (axios.isAxiosError(error)) {
@@ -70,9 +82,6 @@ const ArrivalBookingPage = () => {
         onClick={handleSchedule}
       >
         Schedule
-      </button>
-      <button className="bg-red-600 w-[200px] p-3" onClick={handleBooking}>
-        Registration
       </button>
       {loginError && <p className="text-red-600">{loginError}</p>}
     </div>
