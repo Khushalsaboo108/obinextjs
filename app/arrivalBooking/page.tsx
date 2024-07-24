@@ -13,7 +13,9 @@ const ArrivalBookingPage = () => {
   const router = useRouter();
   const [loginError, setLoginError] = useState("");
   const [loadingData, setLoadingData] = useState(false);
-  const getSessionData = useSelector( (state: RootState) => state.sessionData.sessionId);
+  const getSessionData = useSelector(
+    (state: RootState) => state.sessionData.sessionId
+  );
 
   const handleBooking = async () => {
     try {
@@ -23,9 +25,9 @@ const ArrivalBookingPage = () => {
         "https://nigeriadev.reliablesoftjm.com/VIPERWS/reservecartitem:",
         getData
       );
-      const cartitemId = getData.data.cartitemid;
+      const cartitemIdData = await getData.data.cartitemid;
 
-      localStorage.setItem("cartitemid", cartitemId);
+      dispatch(cartitemId(cartitemIdData));
 
       router.push("/registration");
     } catch (error) {
@@ -50,17 +52,6 @@ const ArrivalBookingPage = () => {
         "https://nigeriadev.reliablesoftjm.com/VIPERWS/getschedule:",
         getscheduleData
       );
-
-      const getData = await arrivialBooking(getSessionData);
-      console.log(
-        "https://nigeriadev.reliablesoftjm.com/VIPERWS/reservecartitem:",
-        getData
-      );
-      const cartitemIdData = await getData.data.cartitemid;
-
-      dispatch(cartitemId(cartitemIdData))
-
-      router.push("/registration");
     } catch (error) {
       setLoadingData(true);
       if (axios.isAxiosError(error)) {
@@ -85,6 +76,11 @@ const ArrivalBookingPage = () => {
       >
         Schedule
       </button>
+
+      <button className="bg-red-600 w-[200px] my-5 p-3" onClick={handleBooking}>
+        reservecartitem
+      </button>
+
       {loginError && <p className="text-red-600">{loginError}</p>}
     </div>
   );

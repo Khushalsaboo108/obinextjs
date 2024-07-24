@@ -7,6 +7,7 @@ import {
   addconfirmationAPI,
   conformationAPI,
   orderId,
+  processCard,
 } from "../api/arrivial/apiPath";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
@@ -39,6 +40,15 @@ const LoginPage = () => {
         addconfirmationData
       );
 
+      const processcard = await processCard(
+        String(getSessionData),
+        String(orderIdData)
+      );
+      console.log(
+        "https://nigeriadev.reliablesoftjm.com/VIPERWS/processcard :",
+        processcard
+      );
+
       const conformation = await conformationAPI(
         String(getSessionData),
         Number(getcartitemIdData)
@@ -46,63 +56,6 @@ const LoginPage = () => {
       console.log(
         "https://nigeriadev.reliablesoftjm.com/VIPERWS/confirmcart :",
         conformation
-      );
-    } catch (error) {
-      setLoadingData(true);
-      if (axios.isAxiosError(error)) {
-        setLoginError(
-          error.response?.data?.message || "An unexpected error occurred"
-        );
-      } else {
-        setLoginError("An unexpected error occurred");
-      }
-    } finally {
-      setLoadingData(false);
-    }
-  };
-
-  const addconfirmation = async () => {
-    const cartitemId = localStorage.getItem("cartitemid") ?? "";
-    const sessionId = localStorage.getItem("sessionId") ?? "";
-    const orderIdData = localStorage.getItem("orderIdData") ?? "";
-    console.log("orderIdData", orderIdData);
-    try {
-      setLoadingData(true);
-      const getData = await addconfirmationAPI(
-        String(sessionId),
-        Number(cartitemId),
-        String(orderIdData)
-      );
-      console.log(
-        "https://nigeriadev.reliablesoftjm.com/VIPERWS/addconfirmationlog :",
-        getData
-      );
-    } catch (error) {
-      setLoadingData(true);
-      if (axios.isAxiosError(error)) {
-        setLoginError(
-          error.response?.data?.message || "An unexpected error occurred"
-        );
-      } else {
-        setLoginError("An unexpected error occurred");
-      }
-    } finally {
-      setLoadingData(false);
-    }
-  };
-
-  const conformation = async () => {
-    const cartitemId = localStorage.getItem("cartitemid") ?? "";
-    const sessionId = localStorage.getItem("sessionId") ?? "";
-    try {
-      setLoadingData(true);
-      const getData = await conformationAPI(
-        String(sessionId),
-        Number(cartitemId)
-      );
-      console.log(
-        "https://nigeriadev.reliablesoftjm.com/VIPERWS/confirmcart :",
-        getData
       );
     } catch (error) {
       setLoadingData(true);
