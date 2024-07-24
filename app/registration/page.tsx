@@ -6,19 +6,25 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { contact } from "../api/arrivial/apiPath";
 import Loading from "../Loading";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 
 const LoginPage = () => {
   const router = useRouter();
   const [loginError, setLoginError] = useState("");
   const [loadingData, setLoadingData] = useState(false);
+  const getSessionData = useSelector( (state: RootState) => state.sessionData.sessionId);
+  const getcartitemIdData = useSelector( (state: RootState) => state.sessionData.cartitemId);
 
-  const sessionId = localStorage.getItem("sessionId") ?? "";
-  const cartitemId = localStorage.getItem("cartitemid") ?? "";
+
+
+  // const sessionId = localStorage.getItem("sessionId") ?? "";
+  // const cartitemId = localStorage.getItem("cartitemid") ?? "";
 
   const handleChange = async () => {
     try {
       setLoadingData(true);
-      const getData = await contact(String(sessionId), Number(cartitemId));
+      const getData = await contact(String(getSessionData), Number(getcartitemIdData));
 
       console.log(
         "https://nigeriadev.reliablesoftjm.com/VIPERWS/setcontact:",

@@ -1,5 +1,4 @@
-'use server'
-import { Request, ResponseToolkit } from "@hapi/hapi";
+"use server";
 import axios from "axios";
 
 export async function arrival() {
@@ -26,6 +25,7 @@ export async function arrival() {
     console.log("Data hello", response.data);
 
     let sessionId = response.data.data.sessionid;
+    // store.dispatch(setSessionId(sessionId))
 
     // localStorage.setItem("sessionId", sessionId);
 
@@ -49,7 +49,7 @@ export async function arrivialBooking(sessionId: string) {
   const res = {
     ...data,
     productid: "ARRIVALONLY",
-    arrivalscheduleid: 450759,
+    arrivalscheduleid: 476739,
     departurescheduleid: 0,
   };
 
@@ -134,7 +134,7 @@ export async function contact(sessionId: string, cartitemId: number) {
       "https://nigeriadev.reliablesoftjm.com/VIPERWS/setcontact",
       body
     );
-    console.log(response.data);
+    console.log("Data on my", response.data);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -188,7 +188,7 @@ export async function addconfirmationAPI(
           referencenumber: "",
           groupid: "NA",
           groupbooking: "N",
-          arrivalscheduleid: 450869,
+          arrivalscheduleid: 476739,
           departurescheduleid: 0,
           adulttickets: 1,
           childtickets: 0,
@@ -259,6 +259,39 @@ export async function addconfirmationAPI(
   }
 }
 
+export async function processCard(sessionId: string, orderIdData: string) {
+  const body = {
+    username: "esite3@viponline",
+    sessionid: sessionId,
+    failstatus: 0,
+    request: {
+      orderid: orderIdData,
+      actiontype: "CHARGECARD",
+      creditcard: {
+        cardtype: "VISA",
+        cardnumber: "szJnJIvD0qin98Sdv6UBFutM/+Vat5yp3nNr8pL6XX0=",
+        cardholder: "GA3PiAz65R+3K1o1dyxnhA==",
+        expirydate: "UbPjQqDmoIDz3hG9SMrINg==",
+        cvv: "r8YBGktz3r6q2vKKI8FAxA==",
+        amount: 50,
+        iv: "LOnnWpsjwGgro6koOObMpQ==",
+      },
+    },
+  };
+
+  console.log("mahesh", body);
+  try {
+    const response = await axios.post(
+      "https://nigeriadev.reliablesoftjm.com/VIPERWS/processcard",
+      body
+    );
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 export async function conformationAPI(sessionId: string, cartitemId: number) {
   const body = {
     username: "esite3@viponline",
@@ -277,7 +310,7 @@ export async function conformationAPI(sessionId: string, cartitemId: number) {
           referencenumber: "",
           groupid: "NA",
           groupbooking: "N",
-          arrivalscheduleid: 450869,
+          arrivalscheduleid: 476739,
           departurescheduleid: 0,
           adulttickets: 1,
           childtickets: 0,
@@ -293,7 +326,7 @@ export async function conformationAPI(sessionId: string, cartitemId: number) {
               firstname: "Khushal",
               lastname: "Saboo",
               email: "khushalsaboo108@gmail.com",
-              phone: "06376135858",
+              phone: "06376361558",
               dob: "",
             },
           ],
@@ -302,7 +335,7 @@ export async function conformationAPI(sessionId: string, cartitemId: number) {
             firstname: "Khushal",
             lastname: "Saboo",
             email: "khushalsaboo108@gmail.com",
-            phone: "06376135858",
+            phone: "06376361558",
           },
           secondarycontact: {
             title: "MR",

@@ -1,16 +1,19 @@
 "use client"
 import { useState } from "react";
 import axios, { AxiosError } from "axios";
-import { NextApiRequest, NextApiResponse } from "next";
-import { arrival } from "./api/arrivial/apiPath";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Loading from "./Loading";
+import { arrival } from "./api/arrivial/apiPath";
+import { useDispatch, useSelector } from "react-redux";
+import { setSessionId } from "./redux/sessionIdSlice";
+import { RootState } from "./redux/store";
 
 const LoginPage = () => {
+  const dispatch = useDispatch();
   const router = useRouter();
   const [loginError, setLoginError] = useState("");
   const [loadingData, setLoadingData] = useState(false);
+  const getSessionData = useSelector((state : RootState) => state.sessionData);
 
   const handleChange = async () => {
     try {
@@ -22,9 +25,8 @@ const LoginPage = () => {
       );
 
       const sessionId = getdata.data.sessionid;
-
-      localStorage.setItem("sessionId", sessionId);
-      // router.push("/arrivalBooking");
+      dispatch(setSessionId(sessionId));
+      router.push("/arrivalBooking");
     } catch (error) {
       setLoadingData(true);
       if (axios.isAxiosError(error)) {

@@ -4,25 +4,30 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { arrivialBooking, getschedule } from "../api/arrivial/apiPath";
 import Loading from "../Loading";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+import { cartitemId } from "../redux/sessionIdSlice";
 
 const ArrivalBookingPage = () => {
+  const dispatch = useDispatch();
   const router = useRouter();
   const [loginError, setLoginError] = useState("");
   const [loadingData, setLoadingData] = useState(false);
-
-  const sessionId = localStorage.getItem("sessionId") ?? "";
+  const getSessionData = useSelector(
+    (state: RootState) => state.sessionData.sessionId
+  );
 
   const handleBooking = async () => {
     try {
       setLoadingData(true);
-      const getData = await arrivialBooking(sessionId);
+      const getData = await arrivialBooking(getSessionData);
       console.log(
         "https://nigeriadev.reliablesoftjm.com/VIPERWS/reservecartitem:",
         getData
       );
-      const cartitemId = getData.data.cartitemid;
+      const cartitemIdData = await getData.data.cartitemid;
 
-      localStorage.setItem("cartitemid", cartitemId);
+      dispatch(cartitemId(cartitemIdData));
 
       router.push("/registration");
     } catch (error) {
@@ -42,23 +47,11 @@ const ArrivalBookingPage = () => {
   const handleSchedule = async () => {
     try {
       setLoadingData(true);
-      const getscheduleData = await getschedule(sessionId);
+      const getscheduleData = await getschedule(getSessionData);
       console.log(
         "https://nigeriadev.reliablesoftjm.com/VIPERWS/getschedule:",
         getscheduleData
       );
-
-      const getData = await arrivialBooking(sessionId);
-      console.log(
-        "https://nigeriadev.reliablesoftjm.com/VIPERWS/reservecartitem:",
-        getData
-      );
-      const cartitemId = await getData.data.cartitemid;
-
-      await localStorage.setItem("cartitemid", cartitemId);
-
-      router.push("/registration");
-
     } catch (error) {
       setLoadingData(true);
       if (axios.isAxiosError(error)) {
@@ -83,6 +76,11 @@ const ArrivalBookingPage = () => {
       >
         Schedule
       </button>
+
+      <button className="bg-red-600 w-[200px] my-5 p-3" onClick={handleBooking}>
+        reservecartitem
+      </button>
+
       {loginError && <p className="text-red-600">{loginError}</p>}
     </div>
   );
