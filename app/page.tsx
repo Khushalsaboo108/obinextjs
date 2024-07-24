@@ -24,7 +24,7 @@ const LoginPage = () => {
       const sessionId = getdata.data.sessionid;
 
       localStorage.setItem("sessionId", sessionId);
-      router.push("/arrivalBooking");
+      // router.push("/arrivalBooking");
     } catch (error) {
       setLoadingData(true);
       if (axios.isAxiosError(error)) {

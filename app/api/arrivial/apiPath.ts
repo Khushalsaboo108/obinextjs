@@ -1,4 +1,4 @@
-"use server";
+'use server'
 import { Request, ResponseToolkit } from "@hapi/hapi";
 import axios from "axios";
 
@@ -49,7 +49,7 @@ export async function arrivialBooking(sessionId: string) {
   const res = {
     ...data,
     productid: "ARRIVALONLY",
-    arrivalscheduleid: 450869,
+    arrivalscheduleid: 450759,
     departurescheduleid: 0,
   };
 
@@ -86,7 +86,7 @@ export async function getschedule(sessionId: string) {
   const res = {
     airportid: "SIA",
     direction: "A",
-    traveldate: "20240724",
+    traveldate: "20240731",
   };
 
   const body = {
