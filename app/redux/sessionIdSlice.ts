@@ -1,23 +1,28 @@
-// sessionIdSlice.ts
+// "use server"
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface SessionState {
-  sessionId: string | null;
+  sessionId: string;
+  cartitemId: number | null;
 }
 
 const initialState: SessionState = {
-  sessionId: null,
+  sessionId: "",
+  cartitemId: null, 
 };
 
 const sessionID = createSlice({
   name: "sessionData",
   initialState,
   reducers: {
-    setSessionId: (state, action: PayloadAction<string>) => {
+    setSessionId: (state, action) => {
       state.sessionId = action.payload;
+    },
+    cartitemId: (state, action) => {
+      state.cartitemId = action.payload;
     },
   },
 });
 
-export const { setSessionId } = sessionID.actions;
+export const { setSessionId, cartitemId } = sessionID.actions;
 export default sessionID.reducer;

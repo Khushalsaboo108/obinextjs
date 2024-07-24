@@ -4,18 +4,21 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { arrivialBooking, getschedule } from "../api/arrivial/apiPath";
 import Loading from "../Loading";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+import { cartitemId } from "../redux/sessionIdSlice";
 
 const ArrivalBookingPage = () => {
+  const dispatch = useDispatch();
   const router = useRouter();
   const [loginError, setLoginError] = useState("");
   const [loadingData, setLoadingData] = useState(false);
-
-  const sessionId = localStorage.getItem("sessionId") ?? "";
+  const getSessionData = useSelector( (state: RootState) => state.sessionData.sessionId);
 
   const handleBooking = async () => {
     try {
       setLoadingData(true);
-      const getData = await arrivialBooking(sessionId);
+      const getData = await arrivialBooking(getSessionData);
       console.log(
         "https://nigeriadev.reliablesoftjm.com/VIPERWS/reservecartitem:",
         getData
@@ -42,23 +45,22 @@ const ArrivalBookingPage = () => {
   const handleSchedule = async () => {
     try {
       setLoadingData(true);
-      const getscheduleData = await getschedule(sessionId);
+      const getscheduleData = await getschedule(getSessionData);
       console.log(
         "https://nigeriadev.reliablesoftjm.com/VIPERWS/getschedule:",
         getscheduleData
       );
 
-      const getData = await arrivialBooking(sessionId);
+      const getData = await arrivialBooking(getSessionData);
       console.log(
         "https://nigeriadev.reliablesoftjm.com/VIPERWS/reservecartitem:",
         getData
       );
-      const cartitemId = await getData.data.cartitemid;
+      const cartitemIdData = await getData.data.cartitemid;
 
-      await localStorage.setItem("cartitemid", cartitemId);
+      dispatch(cartitemId(cartitemIdData))
 
       router.push("/registration");
-
     } catch (error) {
       setLoadingData(true);
       if (axios.isAxiosError(error)) {

@@ -1,10 +1,10 @@
-"use server";
+'use server'
+import { setSessionId } from "@/app/redux/sessionIdSlice";
 import { store } from "@/app/redux/store";
 import { Request, ResponseToolkit } from "@hapi/hapi";
 import axios from "axios";
-import { NextApiRequest, NextApiResponse } from "next";
 
-export default async function handler(req : NextApiRequest, res : NextApiResponse) {
+export async function arrival() {
   const CUSTOMER_LOGIN = {
     username: "esite3@viponline",
     password: "5f4dcc3b5aa765d61d8327deb882cf99",
@@ -25,51 +25,18 @@ export default async function handler(req : NextApiRequest, res : NextApiRespons
       "https://nigeriadev.reliablesoftjm.com/VIPERWS/login",
       body
     );
+    console.log("Data hello", response.data);
 
-    const sessionId = response.data.data.sessionid;
+    let sessionId = response.data.data.sessionid;
+    // store.dispatch(setSessionId(sessionId))
 
-    res.status(200).json({ message: 'Arrival API' });
+    // localStorage.setItem("sessionId", sessionId);
+
+    return response.data;
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'An unexpected error occurred' });
   }
 }
-
-
-// export async function arrival() {
-//   const CUSTOMER_LOGIN = {
-//     username: "esite3@viponline",
-//     password: "5f4dcc3b5aa765d61d8327deb882cf99",
-//   };
-//   const VIPER_CONST = {
-//     alwaysOnUsername: "esite3@viponline",
-//     alwaysOnSessionid: "00009223581026309436128527",
-//   };
-
-//   const body = {
-//     username: VIPER_CONST.alwaysOnUsername,
-//     sessionid: VIPER_CONST.alwaysOnSessionid,
-//     request: CUSTOMER_LOGIN,
-//   };
-
-//   try {
-//     const response = await axios.post(
-//       "https://nigeriadev.reliablesoftjm.com/VIPERWS/login",
-//       body
-//     );
-//     console.log("Data hello", response.data);
-
-//     let sessionId = response.data.data.sessionid;
-//     // store.dispatch()
-
-//     // localStorage.setItem("sessionId", sessionId);
-
-//     return response.data;
-//   } catch (error) {
-//     console.error(error);
-//   }
-// }
-
 
 export async function arrivialBooking(sessionId: string) {
   const data = {
@@ -85,7 +52,7 @@ export async function arrivialBooking(sessionId: string) {
   const res = {
     ...data,
     productid: "ARRIVALONLY",
-    arrivalscheduleid: 450869,
+    arrivalscheduleid: 450759,
     departurescheduleid: 0,
   };
 
@@ -122,7 +89,7 @@ export async function getschedule(sessionId: string) {
   const res = {
     airportid: "SIA",
     direction: "A",
-    traveldate: "20240724",
+    traveldate: "20240731",
   };
 
   const body = {
@@ -170,7 +137,7 @@ export async function contact(sessionId: string, cartitemId: number) {
       "https://nigeriadev.reliablesoftjm.com/VIPERWS/setcontact",
       body
     );
-    console.log(response.data);
+    console.log("Data on my",response.data);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -224,7 +191,7 @@ export async function addconfirmationAPI(
           referencenumber: "",
           groupid: "NA",
           groupbooking: "N",
-          arrivalscheduleid: 450869,
+          arrivalscheduleid: 450759,
           departurescheduleid: 0,
           adulttickets: 1,
           childtickets: 0,
@@ -313,7 +280,7 @@ export async function conformationAPI(sessionId: string, cartitemId: number) {
           referencenumber: "",
           groupid: "NA",
           groupbooking: "N",
-          arrivalscheduleid: 450869,
+          arrivalscheduleid: 450759,
           departurescheduleid: 0,
           adulttickets: 1,
           childtickets: 0,

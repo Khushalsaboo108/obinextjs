@@ -1,56 +1,45 @@
 "use client"
 import { useState } from "react";
 import axios, { AxiosError } from "axios";
-import { NextApiRequest, NextApiResponse } from "next";
-// import { arrival } from "./api/arrivial/apiPath";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Loading from "./Loading";
+import { arrival } from "./api/arrivial/apiPath";
+import { useDispatch, useSelector } from "react-redux";
+import { setSessionId } from "./redux/sessionIdSlice";
+import { RootState } from "./redux/store";
 
 const LoginPage = () => {
+  const dispatch = useDispatch();
   const router = useRouter();
   const [loginError, setLoginError] = useState("");
   const [loadingData, setLoadingData] = useState(false);
-
-  const [sessionId, setSessionId] = useState('');
+  const getSessionData = useSelector((state : RootState) => state.sessionData);
 
   const handleChange = async () => {
     try {
-      const response = await axios.get('/api/arrival/apiPath');
-      const sessionId = response.data;
-      setSessionId(sessionId);
+      setLoadingData(true);
+      const getdata = await arrival();
+      console.log(
+        "https://nigeriadev.reliablesoftjm.com/VIPERWS/login:",
+        getdata
+      );
+
+      const sessionId = getdata.data.sessionid;
+      dispatch(setSessionId(sessionId));
+      router.push("/arrivalBooking");
     } catch (error) {
-      console.error(error);
+      setLoadingData(true);
+      if (axios.isAxiosError(error)) {
+        setLoginError(
+          error.response?.data?.message || "An unexpected error occurred"
+        );
+      } else {
+        setLoginError("An unexpected error occurred");
+      }
+    } finally {
+      setLoadingData(false);
     }
   };
-
-  console.log("sessionId: ", sessionId);
-  // const handleChange = async () => {
-  //   try {
-  //     setLoadingData(true);
-  //     const getdata = await arrival();
-  //     console.log(
-  //       "https://nigeriadev.reliablesoftjm.com/VIPERWS/login:",
-  //       getdata
-  //     );
-
-  //     const sessionId = getdata.data.sessionid;
-
-  //     localStorage.setItem("sessionId", sessionId);
-  //     router.push("/arrivalBooking");
-  //   } catch (error) {
-  //     setLoadingData(true);
-  //     if (axios.isAxiosError(error)) {
-  //       setLoginError(
-  //         error.response?.data?.message || "An unexpected error occurred"
-  //       );
-  //     } else {
-  //       setLoginError("An unexpected error occurred");
-  //     }
-  //   } finally {
-  //     setLoadingData(false);
-  //   }
-  // };
 
   return (
     <div className="text-center flex justify-center mt-4 ">

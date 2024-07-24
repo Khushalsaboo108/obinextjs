@@ -8,30 +8,30 @@ import {
   conformationAPI,
   orderId,
 } from "../api/arrivial/apiPath";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 
 const LoginPage = () => {
   const router = useRouter();
   const [loginError, setLoginError] = useState("");
   const [loadingData, setLoadingData] = useState(false);
+  const getSessionData = useSelector( (state: RootState) => state.sessionData.sessionId);
+  const getcartitemIdData = useSelector( (state: RootState) => state.sessionData.cartitemId);
 
   const handleChange = async () => {
-    const cartitemId = localStorage.getItem("cartitemid") ?? "";
-    const sessionId = localStorage.getItem("sessionId") ?? "";
-    const orderIdData = localStorage.getItem("orderIdData") ?? "";
 
     try {
       setLoadingData(true);
-      const getData = await orderId(sessionId);
+      const getData = await orderId(getSessionData);
       console.log(
         "https://nigeriadev.reliablesoftjm.com/VIPERWS/getorderid :",
         getData
       );
       const orderIdData = await getData.data.orderid;
-      await localStorage.setItem("orderIdData", orderIdData);
 
       const addconfirmationData = await addconfirmationAPI(
-        String(sessionId),
-        Number(cartitemId),
+        String(getSessionData),
+        Number(getcartitemIdData),
         String(orderIdData)
       );
       console.log(
@@ -40,8 +40,8 @@ const LoginPage = () => {
       );
 
       const conformation = await conformationAPI(
-        String(sessionId),
-        Number(cartitemId)
+        String(getSessionData),
+        Number(getcartitemIdData)
       );
       console.log(
         "https://nigeriadev.reliablesoftjm.com/VIPERWS/confirmcart :",
