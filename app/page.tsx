@@ -13,7 +13,6 @@ const LoginPage = () => {
   const router = useRouter();
   const [loginError, setLoginError] = useState("");
   const [loadingData, setLoadingData] = useState(false);
-  const getSessionData = useSelector((state : RootState) => state.sessionData);
 
   const handleChange = async () => {
     try {

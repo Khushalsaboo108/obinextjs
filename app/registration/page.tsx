@@ -13,8 +13,8 @@ const LoginPage = () => {
   const router = useRouter();
   const [loginError, setLoginError] = useState("");
   const [loadingData, setLoadingData] = useState(false);
-  const getSessionData = useSelector( (state: RootState) => state.sessionData.sessionId);
-  const getcartitemIdData = useSelector( (state: RootState) => state.sessionData.cartitemId);
+  const getSessionData = useSelector( (state: RootState) => state.reducer.sessionData.sessionId);
+  const getcartitemIdData = useSelector( (state: RootState) => state.reducer.sessionData.cartitemId);
 
 
 
