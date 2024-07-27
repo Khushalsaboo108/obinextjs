@@ -141,6 +141,7 @@ export async function contact(sessionId: string, cartitemId: number) {
   }
 }
 
+// used in fac
 export async function orderId(sessionId: string) {
   const res = {
     amount: 50,
@@ -166,11 +167,10 @@ export async function orderId(sessionId: string) {
   }
 }
 
-export async function addconfirmationAPI(
-  sessionId: string,
-  cartitemId: number,
-  orderIdData: string
-) {
+export async function addconfirmationAPI(dataAddconfirmation: any) {
+  const sessionId = dataAddconfirmation.sessionid;
+  const cartitemId = dataAddconfirmation.cartitemId;
+  const orderIdData = dataAddconfirmation.orderIdData;
   const body = {
     username: "esite3@viponline",
     sessionid: sessionId,
@@ -259,6 +259,7 @@ export async function addconfirmationAPI(
   }
 }
 
+// used in fac
 export async function processCard(sessionId: string, orderIdData: string) {
   const body = {
     username: "esite3@viponline",
@@ -279,19 +280,20 @@ export async function processCard(sessionId: string, orderIdData: string) {
     },
   };
 
-  console.log("mahesh", body);
   try {
     const response = await axios.post(
       "https://nigeriadev.reliablesoftjm.com/VIPERWS/processcard",
       body
     );
     console.log(response.data);
+    console.log("card Holder", body);
     return response.data;
   } catch (error) {
     console.error(error);
   }
 }
 
+// used in payment handler
 export async function conformationAPI(sessionId: string, cartitemId: number) {
   const body = {
     username: "esite3@viponline",
@@ -374,6 +376,29 @@ export async function conformationAPI(sessionId: string, cartitemId: number) {
       body
     );
     console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function getpaymentgateway() {
+  const body = {
+    username: "esite3@viponline",
+    sessionid: "00009223581026309436128527",
+    request: {},
+  };
+
+  try {
+    const response = await axios.post(
+      "https://nigeriadev.reliablesoftjm.com/VIPERWS/getpaymentgateway",
+      body
+    );
+
+    console.log(response.data);
+
+    console.log("body", body);
+
     return response.data;
   } catch (error) {
     console.error(error);

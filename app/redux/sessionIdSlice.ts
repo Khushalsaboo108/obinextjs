@@ -4,11 +4,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface SessionState {
   sessionId: string;
   cartitemId: number | null;
+  orderId: string;
 }
 
 const initialState: SessionState = {
   sessionId: "",
   cartitemId: null, 
+  orderId:"",
 };
 
 const sessionID = createSlice({
@@ -21,8 +23,11 @@ const sessionID = createSlice({
     cartitemId: (state, action) => {
       state.cartitemId = action.payload;
     },
+    orderIdData: (state, action) => {
+      state.orderId = action.payload;
+    },
   },
 });
 
-export const { setSessionId, cartitemId } = sessionID.actions;
+export const { setSessionId, cartitemId, orderIdData } = sessionID.actions;
 export default sessionID.reducer;

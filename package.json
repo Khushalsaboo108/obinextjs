@@ -11,14 +11,20 @@
   "dependencies": {
     "@hapi/hapi": "^21.3.10",
     "@reduxjs/toolkit": "^2.2.6",
+    "@types/crypto-js": "^4.2.2",
     "axios": "^1.7.2",
+    "crypto-js": "^4.2.0",
+    "formik": "^2.4.6",
+    "md5": "^2.3.0",
     "next": "14.2.5",
     "react": "^18",
     "react-dom": "^18",
     "react-redux": "^9.1.2",
-    "redux-persist": "^6.0.0"
+    "redux-persist": "^6.0.0",
+    "sweetalert2": "^11.12.3"
   },
   "devDependencies": {
+    "@types/md5": "^2.3.5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
