@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useState } from "react";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
@@ -7,6 +7,7 @@ import { arrival } from "./api/arrivial/apiPath";
 import { useDispatch, useSelector } from "react-redux";
 import { setSessionId } from "./redux/sessionIdSlice";
 import { RootState } from "./redux/store";
+import "./style/buttonStyle.css"
 
 const LoginPage = () => {
   const dispatch = useDispatch();
@@ -43,8 +44,13 @@ const LoginPage = () => {
   return (
     <div className="text-center flex justify-center mt-4 ">
       <Loading isLoading={loadingData} />
-      <button className=" bg-red-600 p-3" onClick={handleChange}>
-        Book arrival
+      <button
+        className="darksoul-hover-fill-button2"
+        onClick={handleChange}
+        type="button"
+      >
+        <div className="color-fill-2"></div>
+        <p> Book arrival</p>
       </button>
       {loginError && <p className="text-red-600">{loginError}</p>}
     </div>

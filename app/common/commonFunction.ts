@@ -1,29 +1,29 @@
 
 import CryptoJS from "crypto-js";
-import { addconfirmationAPI } from "../api/arrivial/apiPath";
+import { parse, format, differenceInYears, differenceInMonths } from "date-fns";
+import { store } from "../redux/store";
 
 export const SECRET_KEY = "H@8aAn@eTh)99]B";
 
-export const encryptData = (text: string) => {
-  const encrypted = CryptoJS.AES.encrypt(
-    JSON.stringify(text),
-    SECRET_KEY
-  ).toString();
-  return encrypted;
-  // store.dispatch(setLoggedInUserDetail(encrypted))
-};
 
-export const decryptData = (Text: string) => {
-  const encrypted = Text;
-  const decrypted = CryptoJS.AES.decrypt(encrypted, SECRET_KEY).toString(
-    CryptoJS.enc.Utf8
-  );
-  return JSON.parse(decrypted);
-};
 
 const wordArrayToBase64 = (wordArray : any ) => {
   return CryptoJS.enc.Base64.stringify(wordArray);
 };
+
+const base64ToWordArray = (base64 : any) => {
+  return CryptoJS.enc.Base64.parse(base64);
+};
+
+
+const encryptData = (data : any, iv : any, key : any) => {
+  const value = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(data), base64ToWordArray(key), {
+    iv: iv,
+    mode: CryptoJS.mode.CBC,
+    padding: CryptoJS.pad.Pkcs7
+  });
+  return value.ciphertext.toString(CryptoJS.enc.Base64)
+}
 
 type CardholderDetails = {
   cardNumber: string;
@@ -33,17 +33,16 @@ type CardholderDetails = {
   cardYear: string;
 };
 
-export const encryptCardDetails = (cardholderDetails : CardholderDetails, ) => {
+export const encryptCardDetails = (cardholderDetails : CardholderDetails, key : string ) => {
   
     const IV_RANDOM_NUMBER = 16
 
-    const iv = CryptoJS.lib.WordArray.random(IV_RANDOM_NUMBER);
-    const cardNumber = encryptData(cardholderDetails.cardNumber);
-    const cardHolderName = encryptData(cardholderDetails.name);
-    const cvv = encryptData(cardholderDetails.cvv);
-    const expiryDate = encryptData(`${cardholderDetails.cardMonth}${cardholderDetails.cardYear}`);
+    const iv  = CryptoJS.lib.WordArray.random(IV_RANDOM_NUMBER);
+    const cardNumber = encryptData(cardholderDetails.cardNumber, iv, key );
+    const cardHolderName = encryptData(cardholderDetails.name, iv, key);
+    const cvv = encryptData(cardholderDetails.cvv, iv, key);
+    const expiryDate = encryptData(`${cardholderDetails.cardMonth}${cardholderDetails.cardYear}`, iv, key);
 
-    console.log("Hello",expiryDate)
 
 
     return {
@@ -54,3 +53,20 @@ export const encryptCardDetails = (cardholderDetails : CardholderDetails, ) => {
       expiryDate: expiryDate,
     };
   };
+
+  export function dateFormatForDisplay(date : any, dateFormat : any) {
+    if(!date){
+      return date
+    }
+    let tmpDate = format(new Date(date), dateFormat);
+    return tmpDate;
+  }
+
+  // export function convertAmountToUSD(amount : number ) {
+  //   const state = store.getState();
+  //   const selectedMarket = state.marketRedux?.availableMarkets?.data?.markets?.find((m : any) => m.marketid === state.marketRedux?.selectedMarketId)
+  //   const exchangerate = selectedMarket?.exchangerate;
+  //   const usdAmount = (amount / exchangerate).toFixed(2);
+  
+  //   return usdAmount;
+  // }

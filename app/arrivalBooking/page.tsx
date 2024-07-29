@@ -7,14 +7,15 @@ import Loading from "../Loading";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { cartitemId } from "../redux/sessionIdSlice";
-
+import "../style/buttonStyle.css"
 const ArrivalBookingPage = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const [loginError, setLoginError] = useState("");
   const [loadingData, setLoadingData] = useState(false);
-  const getSessionData = useSelector((state : RootState) => state.reducer.sessionData.sessionId);
-
+  const getSessionData = useSelector(
+    (state: RootState) => state.reducer.sessionData.sessionId
+  );
 
   const handleBooking = async () => {
     try {
@@ -70,14 +71,21 @@ const ArrivalBookingPage = () => {
       <Loading isLoading={loadingData} />
 
       <button
-        className="bg-green-600 w-[200px] my-5 p-3"
+        className="darksoul-hover-fill-button2 scheduleCss "
         onClick={handleSchedule}
+        type="button"
       >
-        Schedule
+        <div className="color-fill-2 scheduleCss-fill"></div>
+        <p>Schedule</p>
       </button>
 
-      <button className="bg-red-600 w-[200px] my-5 p-3" onClick={handleBooking}>
-        reservecartitem
+      <button
+        className="darksoul-hover-fill-button2 my-3"
+        onClick={handleBooking}
+        type="button"
+      >
+        <div className="color-fill-2"></div>
+        <p>reservecartitem</p>
       </button>
 
       {loginError && <p className="text-red-600">{loginError}</p>}

@@ -15,3 +15,9 @@ export interface ResolveData  {
 };
 
 export type HtmlData = string;
+
+export interface cardSlice {
+  cartData: any,
+  cartItemId: Number,
+  error: boolean,
+}

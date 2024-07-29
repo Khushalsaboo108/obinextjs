@@ -1,5 +1,6 @@
 "use server";
 import axios from "axios";
+import { request } from "http";
 
 export async function arrival() {
   const CUSTOMER_LOGIN = {
@@ -99,10 +100,10 @@ export async function getschedule(sessionId: string) {
   try {
     const response = await axios.post(
       " https://nigeriadev.reliablesoftjm.com/VIPERWS/getschedule",
-      body
+      // body
     );
-    console.log(response.data);
-    return response.data;
+    // console.log(response.data);
+    return body;
   } catch (error) {
     console.error(error);
   }
@@ -132,10 +133,10 @@ export async function contact(sessionId: string, cartitemId: number) {
   try {
     const response = await axios.post(
       "https://nigeriadev.reliablesoftjm.com/VIPERWS/setcontact",
-      body
+      // body
     );
-    console.log("Data on my", response.data);
-    return response.data;
+    // console.log("Data on my", response.data);
+    return body;
   } catch (error) {
     console.error(error);
   }
@@ -160,7 +161,7 @@ export async function orderId(sessionId: string) {
       "https://nigeriadev.reliablesoftjm.com/VIPERWS/getorderid",
       body
     );
-    console.log(response.data);
+    console.log( "orderId", response.data);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -169,8 +170,9 @@ export async function orderId(sessionId: string) {
 
 export async function addconfirmationAPI(dataAddconfirmation: any) {
   const sessionId = dataAddconfirmation.sessionid;
-  const cartitemId = dataAddconfirmation.cartitemId;
-  const orderIdData = dataAddconfirmation.orderIdData;
+  const cartitemId = dataAddconfirmation.cardId;
+  const orderIdData = dataAddconfirmation.orderId;
+
   const body = {
     username: "esite3@viponline",
     sessionid: sessionId,
@@ -245,14 +247,13 @@ export async function addconfirmationAPI(dataAddconfirmation: any) {
       orderid: orderIdData,
     },
   };
-
-  console.log("mahesh", body);
   try {
     const response = await axios.post(
       "https://nigeriadev.reliablesoftjm.com/VIPERWS/addconfirmationlog",
       body
     );
-    console.log(response.data);
+    console.log( "addconfirmationAPI", response.data);
+    console.log("addconfirmationAPI body", body);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -260,24 +261,11 @@ export async function addconfirmationAPI(dataAddconfirmation: any) {
 }
 
 // used in fac
-export async function processCard(sessionId: string, orderIdData: string) {
+export async function processCard(processCardRequest: any, sessionId: string) {
   const body = {
     username: "esite3@viponline",
     sessionid: sessionId,
-    failstatus: 0,
-    request: {
-      orderid: orderIdData,
-      actiontype: "CHARGECARD",
-      creditcard: {
-        cardtype: "VISA",
-        cardnumber: "szJnJIvD0qin98Sdv6UBFutM/+Vat5yp3nNr8pL6XX0=",
-        cardholder: "GA3PiAz65R+3K1o1dyxnhA==",
-        expirydate: "UbPjQqDmoIDz3hG9SMrINg==",
-        cvv: "r8YBGktz3r6q2vKKI8FAxA==",
-        amount: 50,
-        iv: "LOnnWpsjwGgro6koOObMpQ==",
-      },
-    },
+    request : processCardRequest
   };
 
   try {
@@ -285,8 +273,8 @@ export async function processCard(sessionId: string, orderIdData: string) {
       "https://nigeriadev.reliablesoftjm.com/VIPERWS/processcard",
       body
     );
-    console.log(response.data);
-    console.log("card Holder", body);
+    console.log( "processCard", response.data);
+    console.log("processCard body", body);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -375,7 +363,7 @@ export async function conformationAPI(sessionId: string, cartitemId: number) {
       "https://nigeriadev.reliablesoftjm.com/VIPERWS/confirmcart",
       body
     );
-    console.log(response.data);
+    console.log( "conformationAPI", response.data);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -395,9 +383,9 @@ export async function getpaymentgateway() {
       body
     );
 
-    console.log(response.data);
+    console.log( "getpaymentgateway request" ,response.data);
 
-    console.log("body", body);
+    console.log("getpaymentgateway body", body);
 
     return response.data;
   } catch (error) {

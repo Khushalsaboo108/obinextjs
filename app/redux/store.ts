@@ -3,6 +3,7 @@ import { useDispatch, TypedUseSelectorHook, useSelector } from "react-redux";
 import { persistReducer } from "redux-persist";
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
 import sessionID from "./sessionIdSlice"
+import cartSlice from "./cardSlice";
 
 const createNoopStorage = () => {
   return {
@@ -25,13 +26,14 @@ const storage =
 
 
     const rootReducter = combineReducers({
-      sessionData : sessionID
+      sessionData : sessionID,
+      cartData : cartSlice
       });
 
 const authPersistConfig = {
   key: "auth",
   storage: storage,
-  whitelist: ["sessionData"],
+  whitelist: ["sessionData" , "cartData"],
 };
 
 const persistedReducer = persistReducer(authPersistConfig, rootReducter);

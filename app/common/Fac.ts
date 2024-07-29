@@ -3,12 +3,13 @@
 // import { addlog } from "./commonFunction";
 import { store, useAppSelector } from "../redux/store";
 import {
+  addconfirmationAPI,
   getpaymentgateway,
   orderId,
   processCard,
 } from "../api/arrivial/apiPath";
 import { PaymentResponse, ResolveData, HtmlData } from "../types";
-import { encryptCardDetails } from "./commonFunction";
+import {  encryptCardDetails } from "./commonFunction";
 import { orderIdData } from "../redux/sessionIdSlice";
 
 export const IS_PAYMENT_MODAL = "iframe";
@@ -16,10 +17,12 @@ export const PRIVATE_AESKEY = "pnFCdYBqZwtbOSKvi8WGKA==";
 
 export let facProcess3DSPayment: any;
 
-if (IS_PAYMENT_MODAL === "popup" as any) {
+if (IS_PAYMENT_MODAL === "iframe" as any) {
   facProcess3DSPayment = async (HtmlData: any) => {
     return new Promise((resolve, reject) => {
       const paymentGatewayDetail = getpaymentgateway();
+
+      console.log(`https://nigeriadev.reliablesoftjm.com/VIPERWS/getpaymentgateway :` , paymentGatewayDetail)
 
       let redirecturl2 = paymentGatewayDetail;
       //  https://nigeria.reliablesoftjm.com/VIPERWS/powertranzcallback
@@ -122,7 +125,7 @@ if (IS_PAYMENT_MODAL === "popup" as any) {
     });
   };
 } else {
-  const facProcess3DSPayment = async (
+  facProcess3DSPayment = async (
     HtmlData: HtmlData,
     setLoading: (loading: boolean) => void
   ): Promise<ResolveData> => {
@@ -256,18 +259,20 @@ export function closeModal() {
   }
 }
 
-export const processCreditCardPayment = async (paymentData: any, getSessionData: string) => {
+export const processCreditCardPayment = async (paymentData: any, getSessionData: string, getcartitemIdData: number ) => {
+
   try {
     const orderIdResponse = await orderId(getSessionData);
+    console.log("https://nigeriadev.reliablesoftjm.com/VIPERWS/getorderid :", orderIdResponse);
+
     const orderIdDataVar = await orderIdResponse.data.orderid;
 
     store.dispatch(orderIdData(orderIdDataVar));
 
     let encryptedCardDetails = encryptCardDetails(
       paymentData?.cardholderDetails,
+      PRIVATE_AESKEY
     );
-
-    console.log("encryptedCardDetails", encryptedCardDetails);
 
     if (
       !orderIdResponse ||
@@ -278,10 +283,20 @@ export const processCreditCardPayment = async (paymentData: any, getSessionData:
       orderIdResponse.statusMessage &&
         console.error("error", orderIdResponse.statusMessage);
     } else {
-      let orderId = orderIdResponse?.data?.orderid;
+
+      const dataAddconfirmation = {
+        sessionid : getSessionData,
+        cardId : getcartitemIdData,
+        orderId :  orderIdDataVar,
+      }
+
+      const addconfirmationData = await addconfirmationAPI(dataAddconfirmation);
+
+      console.log("https://nigeriadev.reliablesoftjm.com/VIPERWS/addconfirmationlog", addconfirmationData)
+
 
       const processCardRequest = {
-        orderid: orderId,
+        orderid: orderIdDataVar,
         actiontype: "CHARGECARD",
         creditcard: {
           cardtype: paymentData.cardholderDetails.cardType,
@@ -289,7 +304,8 @@ export const processCreditCardPayment = async (paymentData: any, getSessionData:
           cardholder: encryptedCardDetails?.cardHolderName,
           expirydate: encryptedCardDetails?.expiryDate,
           cvv: encryptedCardDetails?.cvv,
-          amount: paymentData.amount,
+          // amount: paymentData.amount,
+          amount: 50,
           iv: encryptedCardDetails?.iv,
         },
       };
@@ -299,7 +315,9 @@ export const processCreditCardPayment = async (paymentData: any, getSessionData:
         getSessionData as string 
       );
 
-      if (processCardResponse?.status === 0) {
+      console.log("https://nigeriadev.reliablesoftjm.com/VIPERWS/processcard :" , processCardResponse)
+
+      if (processCardResponse.status === 0) {
         let facResponse;
         if (processCardResponse.data?.html) {
           facResponse = await facProcess3DSPayment(
@@ -321,7 +339,7 @@ export const processCreditCardPayment = async (paymentData: any, getSessionData:
           return processCardResponse;
         }
       } else {
-        await console.error("error", processCardResponse?.statusMessage);
+        await console.error("error Error", processCardResponse?.statusMessage);
         return processCardResponse;
       }
     }
