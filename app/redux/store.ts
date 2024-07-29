@@ -4,6 +4,7 @@ import { persistReducer } from "redux-persist";
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
 import sessionID from "./sessionIdSlice"
 import cartSlice from "./cardSlice";
+import paymentGatewaySlice from "./paymentgatway"
 
 const createNoopStorage = () => {
   return {
@@ -27,7 +28,8 @@ const storage =
 
     const rootReducter = combineReducers({
       sessionData : sessionID,
-      cartData : cartSlice
+      cartData : cartSlice,
+      paymentGatewayRedux : paymentGatewaySlice
       });
 
 const authPersistConfig = {

@@ -69,209 +69,6 @@ const LoginPage = () => {
     }
   };
 
-  // const generateConfirmCartRequest = (paymentType: any, objPayment: any) => {
-  //   let request = {};
-  //   const cartArray: any = [];
-
-  //   let affiliate_subaffiliate_data = get_affiliate_subaffiliate_data();
-  //   let tmpCartItemAmount = 0;
-
-  //   cartCompleteData.map((e: any) => {
-  //     const passengersArray: any = [];
-  //     e?.value?.data?.passengerInfo?.adults.forEach((a: any) => {
-  //       passengersArray.push({
-  //         passengertype: "ADULT",
-  //         title: a?.title.value,
-  //         firstname: a?.firstName,
-  //         lastname: a?.lastName,
-  //         email: a?.email,
-  //         phone: e?.value?.data?.passengerInfo?.primaryContactDetails?.phone,
-  //         dob: a?.dob ? dateFormatForDisplay(a?.dob, "yyyyMMdd") : "",
-  //       });
-  //     });
-
-  //     e?.value?.data?.passengerInfo?.childs.forEach((a: any) => {
-  //       passengersArray.push({
-  //         passengertype: "CHILD",
-  //         title: a?.title.value,
-  //         firstname: a?.firstName,
-  //         lastname: a?.lastName,
-  //         email: a?.email,
-  //         phone: e?.value?.data?.passengerInfo?.primaryContactDetails?.phone,
-  //         dob: dateFormatForDisplay(a?.dob, "yyyyMMdd"),
-  //       });
-  //     });
-
-  //     e?.value?.data?.passengerInfo?.infant.forEach((a: any) => {
-  //       passengersArray.push({
-  //         passengertype: "INFANT",
-  //         title: a?.title.value,
-  //         firstname: a?.firstName,
-  //         lastname: a?.lastName,
-  //         email: a?.email,
-  //         phone: e?.value?.data?.passengerInfo?.primaryContactDetails?.phone,
-  //         dob: dateFormatForDisplay(a?.dob, "yyyyMMdd"),
-  //       });
-  //     });
-
-  //     if (paymentType === "INVOICE" || paymentType === "PREPAID") {
-  //       tmpCartItemAmount = e?.value?.currentCartItem?.wholesale;
-  //     } else {
-  //       tmpCartItemAmount =
-  //         formikData?.values?.cardProfile?.value !== "GUESTCARD"
-  //           ? e?.value?.currentCartItem?.wholesale
-  //           : e?.value?.currentCartItem?.retail;
-  //     }
-  //     if (
-  //       paymentType === "MAGNACARD" ||
-  //       paymentType === "VIPMEMBERSHIPCARD" ||
-  //       paymentType === "PREPAID" ||
-  //       paymentType === "BARTER"
-  //     ) {
-  //       if ("USD" !== DEFAULT_CURRENCYCODE) {
-  //         tmpCartItemAmount = 50;
-  //       }
-  //     }
-
-  //     let groupbooking = distributorProfile?.groupbookingallowed || "N";
-  //     let groupid = groupbooking === "Y" ? distributorProfile?.groupid : "NA";
-  //     let infantCount = parseInt(e?.value?.infantCount);
-
-  //     cartArray.push({
-  //       cartitemid: e?.value?.currentCartItem?.cartitemid,
-  //       productid: e?.value?.currentCartItem?.productid,
-  //       referencenumber: partnerReferenceNumber,
-  //       groupid: groupid,
-  //       groupbooking: groupbooking,
-  //       arrivalscheduleid: e?.value?.currentCartItem?.arrivalscheduleid,
-  //       departurescheduleid: e?.value?.currentCartItem?.departurescheduleid,
-  //       adulttickets: e?.value?.data?.passengerInfo?.adults?.length,
-  //       childtickets: e?.value?.data?.passengerInfo?.childs?.length,
-  //       infanttickets: infantCount, //e?.value?.data?.passengerInfo?.infant?.length,
-  //       optional: {
-  //         specialoccasion:
-  //           e?.value?.data?.passengerInfo?.greetingDetail[0]?.occasion?.value,
-  //         occasioncomment:
-  //           e?.value?.data?.passengerInfo?.greetingDetail[0]?.occasionDetail,
-  //         paddlename: e?.value?.data?.passengerInfo?.greetingDetail[0]?.name,
-  //       },
-  //       passengers: passengersArray,
-  //       primarycontact:
-  //         Object.values(paxCountBookingDetails)?.length === 0
-  //           ? {
-  //               title:
-  //                 e?.value?.data?.passengerInfo?.primaryContactDetails?.title
-  //                   .value,
-  //               firstname:
-  //                 e?.value?.data?.passengerInfo?.primaryContactDetails
-  //                   ?.firstName,
-  //               lastname:
-  //                 e?.value?.data?.passengerInfo?.primaryContactDetails
-  //                   ?.lastName,
-  //               email:
-  //                 e?.value?.data?.passengerInfo?.primaryContactDetails?.email,
-  //               phone:
-  //                 e?.value?.data?.passengerInfo?.primaryContactDetails?.phone,
-  //             }
-  //           : {
-  //               title: "",
-  //               firstname: paxCountBookingDetails?.primary?.contactname,
-  //               lastname: paxCountBookingDetails?.primary?.contactname,
-  //               email: paxCountBookingDetails?.primary?.email,
-  //               phone: paxCountBookingDetails?.primary?.phone,
-  //             },
-  //       secondarycontact:
-  //         Object.values(paxCountBookingDetails)?.length === 0
-  //           ? {
-  //               title:
-  //                 e?.value?.data?.passengerInfo?.secondaryContactDetails?.title
-  //                   .value,
-  //               firstname:
-  //                 e?.value?.data?.passengerInfo?.secondaryContactDetails
-  //                   ?.firstName,
-  //               lastname:
-  //                 e?.value?.data?.passengerInfo?.secondaryContactDetails
-  //                   ?.lastName,
-  //               email:
-  //                 e?.value?.data?.passengerInfo?.secondaryContactDetails?.email,
-  //               phone:
-  //                 e?.value?.data?.passengerInfo?.secondaryContactDetails?.phone,
-  //             }
-  //           : {
-  //               title: "",
-  //               firstname: paxCountBookingDetails?.secondary?.contactname,
-  //               lastname: paxCountBookingDetails?.secondary?.contactname,
-  //               email: paxCountBookingDetails?.secondary?.email,
-  //               phone: paxCountBookingDetails?.secondary?.phone,
-  //             },
-  //       amount: tmpCartItemAmount,
-  //     });
-  //   });
-
-  //   request = {
-  //     ...(Object.values(paxCountBookingDetails)?.length !== 0 && {
-  //       productid: paxCountBookingDetails?.productid,
-  //     }),
-  //     ...(Object.values(paxCountBookingDetails)?.length !== 0 && {
-  //       confirmationnumber: getPaxCountBookingData()[0]?.confirmationnumber
-  //         ? getPaxCountBookingData()[0]?.confirmationnumber
-  //         : getPaxCountBookingData()[1]?.confirmationnumber,
-  //     }),
-  //     ...(Object.values(paxCountBookingDetails)?.length !== 0 && {
-  //       arrivalid: getPaxCountBookingData()[0]?.reservationid
-  //         ? getPaxCountBookingData()[0]?.reservationid
-  //         : 0,
-  //     }),
-  //     ...(Object.values(paxCountBookingDetails)?.length !== 0 && {
-  //       departureid: getPaxCountBookingData()[1]?.reservationid
-  //         ? getPaxCountBookingData()[1]?.reservationid
-  //         : 0,
-  //     }),
-  //     distributorid: getSubDistributorId(),
-  //     sendconfirmation: {
-  //       sendto: "khushalsaboo108@gmail.com",
-  //       copyto: "khushalsaboo108@gmail.com",
-  //     },
-  //     cart: cartArray,
-  //     payment: generatePaymentRequestData(paymentType, objPayment),
-  //     ...(paymentType !== "VIPMEMBERSHIPCARD" &&
-  //       paymentType !== "PREPAID" && {
-  //         affiliateid: affiliate_subaffiliate_data.affiliateid,
-  //       }),
-  //     ...(paymentType !== "VIPMEMBERSHIPCARD" &&
-  //       paymentType !== "PREPAID" && {
-  //         subaffiliateid: affiliate_subaffiliate_data.subaffiliateid,
-  //       }),
-  //     ...(paymentType !== "VIPMEMBERSHIPCARD" &&
-  //       paymentType !== "PREPAID" && { httpreferrer: "" }),
-  //     ...(paymentType !== "VIPMEMBERSHIPCARD" &&
-  //       paymentType !== "PREPAID" && { referrerid: "" }),
-  //     ...(loungePartnerProductOperation(
-  //       "isLoungePartnerLogin",
-  //       "",
-  //       "",
-  //       loginDetail?.username
-  //     ) && {
-  //       loungepartner: {
-  //         distributorid: distributorProfile?.distributorid,
-  //         cardholder:
-  //           cartCompleteData[0]?.value?.data?.passengerInfo?.prioritypass?.name,
-  //         cardnumber:
-  //           cartCompleteData[0]?.value?.data?.passengerInfo?.prioritypass
-  //             ?.cardNumber,
-  //         expirydate:
-  //           cartCompleteData[0]?.value?.data?.passengerInfo?.prioritypass
-  //             ?.cardYear +
-  //           cartCompleteData[0]?.value?.data?.passengerInfo?.prioritypass
-  //             ?.cardMonth +
-  //           "01",
-  //       },
-  //     }),
-  //   };
-
-  //   return request;
-  // };
-
   const handleSubmit = async (values: any, paymentType: string) => {
     let request = {};
     let error = false;
@@ -473,6 +270,7 @@ const LoginPage = () => {
                   type="text"
                   name="cardNumber"
                   placeholder="Card Number"
+                  maxLength={16}
                   className=" border border-black p-[10px] rounded-[5px] w-[100%] "
                   value={formikData.values.cardNumber}
                   onChange={formikData.handleChange}
@@ -517,6 +315,7 @@ const LoginPage = () => {
                   name="cvv"
                   placeholder="CVV"
                   value={formikData.values.cvv}
+                  maxLength={3}
                   className=" border border-black p-[10px] rounded-[5px] w-[100%] "
                   onChange={formikData.handleChange}
                 />
