@@ -352,9 +352,11 @@ const LoginPage = () => {
 
       console.log("callConfirmCart" , callConfirmCart)
 
-      // callConfirmCart === true (It not gatting true so i make it false )
+      // 4012000000020006 working card number but 2 time with otp pottel.;
+      // 4012000000020071 working card number but 2 time without otp pottel
+      // 4111111111111111 give callConfirmCart(False);
 
-      if (callConfirmCart === false) {
+      if (callConfirmCart === true) {
         try {
           setLoadingData(true);
           const res = await conformationAPI(
@@ -391,7 +393,7 @@ const LoginPage = () => {
               selectedPaymentType: paymentType,
               billingEmail: billingEmail,
             };
-            console.log("let see", successInfo);
+
             router.push("/success");
 
           } else {

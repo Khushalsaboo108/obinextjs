@@ -50,7 +50,7 @@ export async function arrivialBooking(sessionId: string) {
   const res = {
     ...data,
     productid: "ARRIVALONLY",
-    arrivalscheduleid: 476739,
+    arrivalscheduleid: 450612,
     departurescheduleid: 0,
   };
 
@@ -99,7 +99,7 @@ export async function getschedule(sessionId: string) {
 
   try {
     const response = await axios.post(
-      " https://nigeriadev.reliablesoftjm.com/VIPERWS/getschedule",
+      " https://nigeriadev.reliablesoftjm.com/VIPERWS/getschedule"
       // body
     );
     // console.log(response.data);
@@ -132,7 +132,7 @@ export async function contact(sessionId: string, cartitemId: number) {
 
   try {
     const response = await axios.post(
-      "https://nigeriadev.reliablesoftjm.com/VIPERWS/setcontact",
+      "https://nigeriadev.reliablesoftjm.com/VIPERWS/setcontact"
       // body
     );
     // console.log("Data on my", response.data);
@@ -161,7 +161,7 @@ export async function orderId(sessionId: string) {
       "https://nigeriadev.reliablesoftjm.com/VIPERWS/getorderid",
       body
     );
-    console.log( "orderId", response.data);
+    console.log("orderId", response.data);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -252,7 +252,7 @@ export async function addconfirmationAPI(dataAddconfirmation: any) {
       "https://nigeriadev.reliablesoftjm.com/VIPERWS/addconfirmationlog",
       body
     );
-    console.log( "addconfirmationAPI", response.data);
+    console.log("addconfirmationAPI", response.data);
     console.log("addconfirmationAPI body", body);
     return response.data;
   } catch (error) {
@@ -265,7 +265,7 @@ export async function processCard(processCardRequest: any, sessionId: string) {
   const body = {
     username: "esite3@viponline",
     sessionid: sessionId,
-    request : processCardRequest
+    request: processCardRequest,
   };
 
   try {
@@ -273,7 +273,7 @@ export async function processCard(processCardRequest: any, sessionId: string) {
       "https://nigeriadev.reliablesoftjm.com/VIPERWS/processcard",
       body
     );
-    console.log( "processCard", response.data);
+    console.log("processCard", response.data);
     console.log("processCard body", body);
     return response.data;
   } catch (error) {
@@ -300,7 +300,7 @@ export async function conformationAPI(sessionId: string, cartitemId: number) {
           referencenumber: "",
           groupid: "NA",
           groupbooking: "N",
-          arrivalscheduleid: 476739,
+          arrivalscheduleid: 450612,
           departurescheduleid: 0,
           adulttickets: 1,
           childtickets: 0,
@@ -342,8 +342,8 @@ export async function conformationAPI(sessionId: string, cartitemId: number) {
         charged: "Y",
         creditcard: {
           cardtype: "VISA",
-          cardnumber: "1111",
-          cardholder: "Khushal Saboo",
+          cardnumber: "0006",
+          cardholder: "shubam",
           email: "khushalsaboo108@gmail.com",
           currency: "USD",
           amount: 50,
@@ -363,7 +363,7 @@ export async function conformationAPI(sessionId: string, cartitemId: number) {
       "https://nigeriadev.reliablesoftjm.com/VIPERWS/confirmcart",
       body
     );
-    console.log( "conformationAPI", response.data);
+    console.log("conformationAPI", response.data);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -383,7 +383,7 @@ export async function getpaymentgateway() {
       body
     );
 
-    console.log( "getpaymentgateway request" ,response.data);
+    console.log("getpaymentgateway request", response.data);
 
     console.log("getpaymentgateway body", body);
 
