@@ -39,7 +39,6 @@ const ArrivalBookingPage = () => {
 
       console.log(`${VIPER_URL}reservecartitem :`, requestFunction);
 
-
       const getData = await arrivialBooking(requestFunction);
 
       console.log(`${VIPER_URL}reservecartitem`, getData);
@@ -47,12 +46,11 @@ const ArrivalBookingPage = () => {
       const cartitemIdData = await getData.data.cartitemid;
       dispatch(cartitemId(cartitemIdData));
 
-      if(getData.status === 0) {
+      if (getData.status === 0) {
         router.push("/registration");
       } else {
         setStatusError(getData.statusMessage);
       }
-
     } catch (error) {
       setLoadingData(true);
       if (axios.isAxiosError(error)) {
@@ -84,8 +82,10 @@ const ArrivalBookingPage = () => {
       const getscheduleData = await getschedule(requestFunction);
 
       console.log(`${VIPER_URL}getschedule:`, getscheduleData);
-
-      setStatusError(getscheduleData.statusMessage);
+      
+      if (getscheduleData.status !== 0) {
+        setStatusError(getscheduleData.statusMessage);
+      }
     } catch (error) {
       setLoadingData(true);
       if (axios.isAxiosError(error)) {

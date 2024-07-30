@@ -14,6 +14,7 @@ const LoginPage = () => {
   const router = useRouter();
   const [loginError, setLoginError] = useState("");
   const [loadingData, setLoadingData] = useState(false);
+  
   const getSessionData = useSelector(
     (state: RootState) => state.reducer.sessionData.sessionId
   );
@@ -75,6 +76,7 @@ const LoginPage = () => {
         {/* <Link href={"/arrivalBooking"}>Book arrival</Link> */}
         Payment
       </button>
+      {statusError && <p className="text-red-600">{statusError}</p>}
       {loginError && <p className="text-red-600">{loginError}</p>}
     </div>
   );
