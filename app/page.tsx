@@ -57,7 +57,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="text-center flex flex-col justify-center mt-4 ">
+    <div className="text-center flex justify-center mt-36">
       <Loading isLoading={loadingData} />
       <button
         className="darksoul-hover-fill-button2"

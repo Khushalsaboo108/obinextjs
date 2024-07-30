@@ -8,15 +8,19 @@ import { contact } from "../api/arrivial/apiPath";
 import Loading from "../Loading";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
+import { createRequestBody, VIPER_URL } from "../commonConstant";
 
 const LoginPage = () => {
   const router = useRouter();
   const [loginError, setLoginError] = useState("");
   const [loadingData, setLoadingData] = useState(false);
-  const getSessionData = useSelector( (state: RootState) => state.reducer.sessionData.sessionId);
-  const getcartitemIdData = useSelector( (state: RootState) => state.reducer.sessionData.cartitemId);
-
-
+  const getSessionData = useSelector(
+    (state: RootState) => state.reducer.sessionData.sessionId
+  );
+  const getcartitemIdData = useSelector(
+    (state: RootState) => state.reducer.sessionData.cartitemId
+  );
+  const [statusError, setStatusError] = useState("");
 
   // const sessionId = localStorage.getItem("sessionId") ?? "";
   // const cartitemId = localStorage.getItem("cartitemid") ?? "";
@@ -24,14 +28,31 @@ const LoginPage = () => {
   const handleChange = async () => {
     try {
       setLoadingData(true);
-      const getData = await contact(String(getSessionData), Number(getcartitemIdData));
 
-      console.log(
-        "https://nigeriadev.reliablesoftjm.com/VIPERWS/setcontact:",
-        getData
-      );
+      const request = {
+        contact: {
+          cartitemid: getcartitemIdData,
+          email: "khushalsaboo108@gmail.com",
+          firstname: "Khushal",
+          lastname: "Saboo",
+          phone: "06376135858",
+          title: "MR",
+        },
+      };
 
-      router.push("/payment");
+      const requestFunction = await createRequestBody(getSessionData, request);
+
+      console.log(`${VIPER_URL}setcontact :`, requestFunction);
+
+      const getData = await contact(requestFunction);
+
+      console.log(`${VIPER_URL}setcontact :`, getData);
+
+      if (getData.status === 0) {
+        router.push("/payment");
+      } else {
+        setStatusError(getData.statusMessage);
+      }
     } catch (error) {
       setLoadingData(true);
       if (axios.isAxiosError(error)) {

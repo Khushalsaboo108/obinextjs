@@ -9,20 +9,24 @@ import {
   processCard,
 } from "../api/arrivial/apiPath";
 import { PaymentResponse, ResolveData, HtmlData } from "../types";
-import {  encryptCardDetails } from "./commonFunction";
+import { encryptCardDetails } from "./commonFunction";
 import { orderIdData } from "../redux/sessionIdSlice";
+import { createRequestBody, VIPER_URL } from "../commonConstant";
 
 export const IS_PAYMENT_MODAL = "iframe";
 export const PRIVATE_AESKEY = "pnFCdYBqZwtbOSKvi8WGKA==";
 
 export let facProcess3DSPayment: any;
 
-if (IS_PAYMENT_MODAL === "iframe" as any) {
+if (IS_PAYMENT_MODAL ===( "iframe" as any)) {
   facProcess3DSPayment = async (HtmlData: any) => {
     return new Promise((resolve, reject) => {
       const paymentGatewayDetail = getpaymentgateway();
 
-      console.log(`https://nigeriadev.reliablesoftjm.com/VIPERWS/getpaymentgateway :` , paymentGatewayDetail)
+      console.log(
+        `https://nigeriadev.reliablesoftjm.com/VIPERWS/getpaymentgateway :`,
+        paymentGatewayDetail
+      );
 
       let redirecturl2 = paymentGatewayDetail;
       //  https://nigeria.reliablesoftjm.com/VIPERWS/powertranzcallback
@@ -259,11 +263,27 @@ export function closeModal() {
   }
 }
 
-export const processCreditCardPayment = async (paymentData: any, getSessionData: string, getcartitemIdData: number ) => {
-
+export const processCreditCardPayment = async (
+  paymentData: any,
+  getSessionData: string,
+  getcartitemIdData: number
+) => {
   try {
-    const orderIdResponse = await orderId(getSessionData);
-    console.log("https://nigeriadev.reliablesoftjm.com/VIPERWS/getorderid :", orderIdResponse);
+    const requestGetid = {
+      amount: 50,
+      source: "OBI-MAIN",
+    };
+
+    const requestFunction = await createRequestBody(
+      getSessionData,
+      requestGetid
+    );
+
+    console.log(`${VIPER_URL}getorderid :`, requestFunction);
+
+    const orderIdResponse = await orderId(requestFunction);
+
+    console.log(`${VIPER_URL}getorderid :`, orderIdResponse);
 
     const orderIdDataVar = await orderIdResponse.data.orderid;
 
@@ -284,16 +304,86 @@ export const processCreditCardPayment = async (paymentData: any, getSessionData:
         console.error("error", orderIdResponse.statusMessage);
     } else {
 
-      const dataAddconfirmation = {
-        sessionid : getSessionData,
-        cardId : getcartitemIdData,
-        orderId :  orderIdDataVar,
-      }
+      const requestAddConfirmationLog = {
+        distributorid: "",
+        sendconfirmation: {
+          sendto: "khushalsaboo108@gmail.com",
+          copyto: "",
+        },
+        cart: [
+          {
+            cartitemid: getcartitemIdData,
+            productid: "ARRIVALONLY",
+            referencenumber: "",
+            groupid: "NA",
+            groupbooking: "N",
+            arrivalscheduleid: 476739,
+            departurescheduleid: 0,
+            adulttickets: 1,
+            childtickets: 0,
+            infanttickets: 0,
+            optional: {
+              occasioncomment: "",
+              paddlename: "Khushal Saboo",
+            },
+            passengers: [
+              {
+                passengertype: "ADULT",
+                title: "MR",
+                firstname: "Khushal",
+                lastname: "Saboo",
+                email: "khushalsaboo108@gmail.com",
+                phone: "06376135858",
+                dob: "",
+              },
+            ],
+            primarycontact: {
+              title: "MR",
+              firstname: "Khushal",
+              lastname: "Saboo",
+              email: "khushalsaboo108@gmail.com",
+              phone: "06376135858",
+            },
+            secondarycontact: {
+              title: "MR",
+              firstname: "",
+              lastname: "",
+              email: "",
+              phone: "",
+            },
+            amount: 50,
+          },
+        ],
+        payment: {
+          paymenttype: "GUESTCARD",
+          charged: "Y",
+          creditcard: {
+            cardtype: "VISA",
+            cardnumber: "1111",
+            cardholder: "Khushal Saboo",
+            email: "khushalsaboo108@gmail.com",
+            currency: "USD",
+            amount: 50,
+            authorizationnumber: 123456,
+          },
+        },
+        affiliateid: "!",
+        subaffiliateid: 0,
+        httpreferrer: "",
+        referrerid: "",
+        orderid: orderIdDataVar,
+    };
 
-      const addconfirmationData = await addconfirmationAPI(dataAddconfirmation);
+      const requestFunction = await createRequestBody(
+        getSessionData,
+        requestAddConfirmationLog
+      );
 
-      console.log("https://nigeriadev.reliablesoftjm.com/VIPERWS/addconfirmationlog", addconfirmationData)
+      console.log(`${VIPER_URL}addconfirmationlog :`, requestFunction);
 
+      const addconfirmationData = await addconfirmationAPI(requestFunction);
+
+      console.log(`${VIPER_URL}addconfirmationlog :`, addconfirmationData);
 
       const processCardRequest = {
         orderid: orderIdDataVar,
@@ -304,18 +394,21 @@ export const processCreditCardPayment = async (paymentData: any, getSessionData:
           cardholder: encryptedCardDetails?.cardHolderName,
           expirydate: encryptedCardDetails?.expiryDate,
           cvv: encryptedCardDetails?.cvv,
-          // amount: paymentData.amount,
           amount: 50,
           iv: encryptedCardDetails?.iv,
         },
       };
-      
-      const processCardResponse = await processCard(
-        processCardRequest as any,
-        getSessionData as string 
+
+      const requestProcesscard = await createRequestBody(
+        getSessionData,
+        processCardRequest
       );
 
-      console.log("https://nigeriadev.reliablesoftjm.com/VIPERWS/processcard :" , processCardResponse)
+      console.log(`${VIPER_URL}processcard :`, requestProcesscard);
+
+      const processCardResponse = await processCard(requestProcesscard);
+
+      console.log(`${VIPER_URL}processcard :`, processCardResponse );
 
       if (processCardResponse.status === 0) {
         let facResponse;
@@ -347,4 +440,3 @@ export const processCreditCardPayment = async (paymentData: any, getSessionData:
     console.error("Error :", e);
   }
 };
-

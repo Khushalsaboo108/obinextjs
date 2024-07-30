@@ -37,7 +37,7 @@ const ArrivalBookingPage = () => {
 
       const requestFunction = await createRequestBody(getSessionData, request);
 
-      console.log(`${VIPER_URL}getschedule :`, requestFunction);
+      console.log(`${VIPER_URL}reservecartitem :`, requestFunction);
 
 
       const getData = await arrivialBooking(requestFunction);

@@ -13,6 +13,7 @@ import { orderIdData } from "../redux/sessionIdSlice";
 import { processCreditCardPayment } from "../common/Fac";
 import { cartData } from "../redux/cardSlice";
 import { dateFormatForDisplay } from "../common/commonFunction";
+import { createRequestBody, VIPER_URL } from "../commonConstant";
 
 const LoginPage = () => {
   const DEFAULT_CURRENCYCODE = "USD";
@@ -31,6 +32,7 @@ const LoginPage = () => {
   const getOrderIdData = useAppSelector(
     (state) => state.reducer.sessionData.orderId
   );
+  
 
   const [submitOnClickDisable, setSubmitOnClickDisable] = useState(false);
 
@@ -147,7 +149,7 @@ const LoginPage = () => {
         console.log("We have error");
       }
 
-      console.log("callConfirmCart" , callConfirmCart)
+      console.log("callConfirmCart", callConfirmCart);
 
       // 4012000000020006 working card number but 2 time with otp pottel.;
       // 4012000000020071 working card number but 2 time without otp pottel
@@ -156,14 +158,87 @@ const LoginPage = () => {
       if (callConfirmCart === true) {
         try {
           setLoadingData(true);
-          const res = await conformationAPI(
-            String(getSessionData),
-            Number(getcartitemIdData)
+
+          const requestConfirmCart = {
+            distributorid: "",
+            sendconfirmation: {
+              sendto: "khushalsaboo108@gmail.com",
+              copyto: "",
+            },
+            cart: [
+              {
+                cartitemid: getcartitemIdData,
+                productid: "ARRIVALONLY",
+                referencenumber: "",
+                groupid: "NA",
+                groupbooking: "N",
+                arrivalscheduleid: 450612,
+                departurescheduleid: 0,
+                adulttickets: 1,
+                childtickets: 0,
+                infanttickets: 0,
+                optional: {
+                  occasioncomment: "",
+                  paddlename: "Khushal Saboo",
+                },
+                passengers: [
+                  {
+                    passengertype: "ADULT",
+                    title: "MR",
+                    firstname: "Khushal",
+                    lastname: "Saboo",
+                    email: "khushalsaboo108@gmail.com",
+                    phone: "06376361558",
+                    dob: "",
+                  },
+                ],
+                primarycontact: {
+                  title: "MR",
+                  firstname: "Khushal",
+                  lastname: "Saboo",
+                  email: "khushalsaboo108@gmail.com",
+                  phone: "06376361558",
+                },
+                secondarycontact: {
+                  title: "MR",
+                  firstname: "",
+                  lastname: "",
+                  email: "",
+                  phone: "",
+                },
+                amount: 50,
+              },
+            ],
+            payment: {
+              paymenttype: "GUESTCARD",
+              charged: "Y",
+              creditcard: {
+                cardtype: "VISA",
+                cardnumber: "0006",
+                cardholder: "shubam",
+                email: "khushalsaboo108@gmail.com",
+                currency: "USD",
+                amount: 50,
+                authorizationnumber: "123456",
+              },
+            },
+            affiliateid: "!",
+            subaffiliateid: 0,
+            httpreferrer: "",
+            referrerid: "",
+          };
+
+          const requestconfirmcart = await createRequestBody(
+            getSessionData,
+            requestConfirmCart
           );
-          console.log(
-            "https://nigeriadev.reliablesoftjm.com/VIPERWS/confirmcart",
-            res
-          );
+
+          console.log(`${VIPER_URL}confirmcart :`, requestconfirmcart);
+
+          const res = await conformationAPI(requestconfirmcart);
+
+          console.log(`${VIPER_URL}confirmcart `, res);
+
           if (res.status === 0) {
             let successCurrencyCode = "USD";
             let successAmount = getAmount(
@@ -192,7 +267,6 @@ const LoginPage = () => {
             };
 
             router.push("/success");
-
           } else {
             console.error("error", res.statusMessage);
             console.log("Error", res.statusMessage);
