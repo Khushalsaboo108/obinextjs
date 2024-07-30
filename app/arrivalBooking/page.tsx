@@ -7,12 +7,14 @@ import Loading from "../Loading";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { cartitemId } from "../redux/sessionIdSlice";
-import "../style/buttonStyle.css"
+import "../style/buttonStyle.css";
+import { createRequestBody, VIPER_URL } from "../commonConstant";
 const ArrivalBookingPage = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const [loginError, setLoginError] = useState("");
   const [loadingData, setLoadingData] = useState(false);
+  const [statusError, setStatusError] = useState("");
   const getSessionData = useSelector(
     (state: RootState) => state.reducer.sessionData.sessionId
   );
@@ -20,16 +22,37 @@ const ArrivalBookingPage = () => {
   const handleBooking = async () => {
     try {
       setLoadingData(true);
-      const getData = await arrivialBooking(getSessionData);
-      console.log(
-        "https://nigeriadev.reliablesoftjm.com/VIPERWS/reservecartitem:",
-        getData
-      );
-      const cartitemIdData = await getData.data.cartitemid;
 
+      const request = {
+        cartitemid: 0,
+        productid: "ARRIVALONLY",
+        ticketsrequested: 1,
+        adulttickets: 1,
+        childtickets: 0,
+        paymenttype: "GUESTCARD",
+        distributorid: "",
+        arrivalscheduleid: 450920,
+        departurescheduleid: 0,
+      };
+
+      const requestFunction = await createRequestBody(getSessionData, request);
+
+      console.log(`${VIPER_URL}getschedule :`, requestFunction);
+
+
+      const getData = await arrivialBooking(requestFunction);
+
+      console.log(`${VIPER_URL}reservecartitem`, getData);
+
+      const cartitemIdData = await getData.data.cartitemid;
       dispatch(cartitemId(cartitemIdData));
 
-      router.push("/registration");
+      if(getData.status === 0) {
+        router.push("/registration");
+      } else {
+        setStatusError(getData.statusMessage);
+      }
+
     } catch (error) {
       setLoadingData(true);
       if (axios.isAxiosError(error)) {
@@ -47,11 +70,22 @@ const ArrivalBookingPage = () => {
   const handleSchedule = async () => {
     try {
       setLoadingData(true);
-      const getscheduleData = await getschedule(getSessionData);
-      console.log(
-        "https://nigeriadev.reliablesoftjm.com/VIPERWS/getschedule:",
-        getscheduleData
-      );
+
+      const request = {
+        airportid: "SIA",
+        direction: "A",
+        traveldate: "20240731",
+      };
+
+      const requestFunction = await createRequestBody(getSessionData, request);
+
+      console.log(`${VIPER_URL}getschedule :`, requestFunction);
+
+      const getscheduleData = await getschedule(requestFunction);
+
+      console.log(`${VIPER_URL}getschedule:`, getscheduleData);
+
+      setStatusError(getscheduleData.statusMessage);
     } catch (error) {
       setLoadingData(true);
       if (axios.isAxiosError(error)) {
@@ -87,7 +121,7 @@ const ArrivalBookingPage = () => {
         <div className="color-fill-2"></div>
         <p>reservecartitem</p>
       </button>
-
+      {statusError && <p className="text-red-600">{statusError}</p>}
       {loginError && <p className="text-red-600">{loginError}</p>}
     </div>
   );

@@ -1,109 +1,40 @@
 "use server";
+import { CUSTOMER_LOGIN, VIPER_CONST, VIPER_URL } from "@/app/commonConstant";
 import axios from "axios";
 import { request } from "http";
 
-export async function arrival() {
-  const CUSTOMER_LOGIN = {
-    username: "esite3@viponline",
-    password: "5f4dcc3b5aa765d61d8327deb882cf99",
-  };
-  const VIPER_CONST = {
-    alwaysOnUsername: "esite3@viponline",
-    alwaysOnSessionid: "00009223581026309436128527",
-  };
-
-  const body = {
-    username: VIPER_CONST.alwaysOnUsername,
-    sessionid: VIPER_CONST.alwaysOnSessionid,
-    request: CUSTOMER_LOGIN,
-  };
-
+export async function arrival(body: any) {
   try {
-    const response = await axios.post(
-      "https://nigeriadev.reliablesoftjm.com/VIPERWS/login",
-      body
-    );
+    const response = await axios.post(`${VIPER_URL}login`, body);
     console.log("Data hello", response.data);
 
-    let sessionId = response.data.data.sessionid;
-    // store.dispatch(setSessionId(sessionId))
-
-    // localStorage.setItem("sessionId", sessionId);
-
     return response.data;
   } catch (error) {
     console.error(error);
   }
 }
 
-export async function arrivialBooking(sessionId: string) {
-  const data = {
-    cartitemid: 0,
-    productid: "ARRIVALONLY",
-    ticketsrequested: 1,
-    adulttickets: 1,
-    childtickets: 0,
-    paymenttype: "GUESTCARD",
-    distributorid: "",
-  };
-
-  const res = {
-    ...data,
-    productid: "ARRIVALONLY",
-    arrivalscheduleid: 450612,
-    departurescheduleid: 0,
-  };
-
-  const body = {
-    username: "esite3@viponline",
-    sessionid: sessionId,
-    failstatus: 0,
-    request: res,
-  };
+export async function arrivialBooking(requestFunction: any) {
+  
 
   try {
-    const response = await axios.post(
-      "https://nigeriadev.reliablesoftjm.com/VIPERWS/reservecartitem",
-      body
-    );
+    const response = await axios.post(`${VIPER_URL}reservecartitem`, requestFunction);
+
     console.log(response.data);
     return response.data;
+
   } catch (error) {
     console.error(error);
   }
 }
 
-export async function getschedule(sessionId: string) {
-  const data = {
-    cartitemid: 0,
-    productid: "ARRIVALONLY",
-    ticketsrequested: 1,
-    adulttickets: 1,
-    childtickets: 0,
-    paymenttype: "GUESTCARD",
-    distributorid: "",
-  };
-
-  const res = {
-    airportid: "SIA",
-    direction: "A",
-    traveldate: "20240731",
-  };
-
-  const body = {
-    username: "esite3@viponline",
-    sessionid: sessionId,
-    failstatus: 0,
-    request: res,
-  };
-
+export async function getschedule(requestFunction: any) {
   try {
     const response = await axios.post(
-      " https://nigeriadev.reliablesoftjm.com/VIPERWS/getschedule"
-      // body
+      `${VIPER_URL}getschedule`,
+      requestFunction
     );
-    // console.log(response.data);
-    return body;
+    return response.data;
   } catch (error) {
     console.error(error);
   }
