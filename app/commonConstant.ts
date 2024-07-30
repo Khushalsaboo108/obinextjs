@@ -17,4 +17,4 @@ export function createRequestBody (sessionId : string, request :any ) {
         failstatus: 0,
         request: request,
     };
-}
+};

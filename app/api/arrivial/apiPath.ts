@@ -120,7 +120,7 @@ export async function getpaymentgateway() {
 
   try {
     const response = await axios.post(
-      "https://nigeriadev.reliablesoftjm.com/VIPERWS/getpaymentgateway",
+      `${VIPER_URL}getpaymentgateway`,
       body
     );
 
