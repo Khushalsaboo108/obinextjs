@@ -31,7 +31,7 @@ const ArrivalBookingPage = () => {
         childtickets: 0,
         paymenttype: "GUESTCARD",
         distributorid: "",
-        arrivalscheduleid: 450920,
+        arrivalscheduleid: 453912,
         departurescheduleid: 0,
       };
 

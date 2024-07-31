@@ -18,17 +18,15 @@ export const PRIVATE_AESKEY = "pnFCdYBqZwtbOSKvi8WGKA==";
 
 export let facProcess3DSPayment: any;
 
-if (IS_PAYMENT_MODAL ===( "iframe" as any)) {
+if (IS_PAYMENT_MODAL === ("iframe" as any)) {
   facProcess3DSPayment = async (HtmlData: any) => {
     return new Promise((resolve, reject) => {
-      const paymentGatewayDetail = getpaymentgateway();
+      const state = store.getState();
+      const paymentGatewayDetail = state?.reducer.paymentGatewayRedux.resultData;
 
-      console.log(
-        `https://nigeriadev.reliablesoftjm.com/VIPERWS/getpaymentgateway :`,
-        paymentGatewayDetail
-      );
+      console.log(`${VIPER_URL}getpaymentgateway :`, paymentGatewayDetail);
 
-      let redirecturl2 = paymentGatewayDetail;
+      let redirecturl2 = paymentGatewayDetail?.data?.redirecturl2;
       //  https://nigeria.reliablesoftjm.com/VIPERWS/powertranzcallback
 
       let width = 900;
@@ -134,8 +132,12 @@ if (IS_PAYMENT_MODAL ===( "iframe" as any)) {
     setLoading: (loading: boolean) => void
   ): Promise<ResolveData> => {
     return new Promise((resolve, reject) => {
-      const paymentGatewayDetail = getpaymentgateway();
-      const redirecturl2 = paymentGatewayDetail;
+      const state = store.getState();
+      const paymentGatewayDetail = state?.reducer.paymentGatewayRedux?.resultData;
+
+      console.log(`${VIPER_URL}getpaymentgateway :`, paymentGatewayDetail);
+      
+      let redirecturl2 = paymentGatewayDetail?.data?.redirecturl2;
 
       // Create modal
       const modal = document.createElement("div");
@@ -303,7 +305,6 @@ export const processCreditCardPayment = async (
       orderIdResponse.statusMessage &&
         console.error("error", orderIdResponse.statusMessage);
     } else {
-
       const requestAddConfirmationLog = {
         distributorid: "",
         sendconfirmation: {
@@ -317,7 +318,7 @@ export const processCreditCardPayment = async (
             referencenumber: "",
             groupid: "NA",
             groupbooking: "N",
-            arrivalscheduleid: 476739,
+            arrivalscheduleid: 453912,
             departurescheduleid: 0,
             adulttickets: 1,
             childtickets: 0,
@@ -372,7 +373,7 @@ export const processCreditCardPayment = async (
         httpreferrer: "",
         referrerid: "",
         orderid: orderIdDataVar,
-    };
+      };
 
       const requestFunction = await createRequestBody(
         getSessionData,
@@ -408,7 +409,7 @@ export const processCreditCardPayment = async (
 
       const processCardResponse = await processCard(requestProcesscard);
 
-      console.log(`${VIPER_URL}processcard :`, processCardResponse );
+      console.log(`${VIPER_URL}processcard :`, processCardResponse);
 
       if (processCardResponse.status === 0) {
         let facResponse;

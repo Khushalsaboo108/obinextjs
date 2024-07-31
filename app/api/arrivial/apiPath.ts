@@ -111,18 +111,15 @@ export async function conformationAPI(requestconfirmcart: any) {
   }
 }
 
-export async function getpaymentgateway() {
+export async function getpaymentgateway(sessionId: any) {
   const body = {
     username: "esite3@viponline",
-    sessionid: "00009223581026309436128527",
+    sessionid: sessionId,
     request: {},
   };
 
   try {
-    const response = await axios.post(
-      `${VIPER_URL}getpaymentgateway`,
-      body
-    );
+    const response = await axios.post(`${VIPER_URL}getpaymentgateway`, body);
 
     console.log("getpaymentgateway request", response.data);
 

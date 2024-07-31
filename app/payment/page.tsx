@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import Loading from "../Loading";
-import { conformationAPI, orderId, processCard } from "../api/arrivial/apiPath";
+import { conformationAPI } from "../api/arrivial/apiPath";
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch, useAppSelector } from "../redux/store";
 import { useFormik } from "formik";
@@ -14,12 +14,16 @@ import { processCreditCardPayment } from "../common/Fac";
 import { cartData } from "../redux/cardSlice";
 import { dateFormatForDisplay } from "../common/commonFunction";
 import { createRequestBody, VIPER_URL } from "../commonConstant";
+import { fetchPaymentGateway } from "../redux/paymentgatway";
+
+// export const getSessionData = useAppSelector(
+//   (state : roo) => state.reducer.sessionData.sessionId
+// );
 
 const LoginPage = () => {
   const DEFAULT_CURRENCYCODE = "USD";
-
-  const cartCompleteData = useSelector(cartData);
   const dispatch = useAppDispatch();
+  const cartCompleteData = useSelector(cartData);
   const router = useRouter();
   const [loginError, setLoginError] = useState("");
   const [loadingData, setLoadingData] = useState(false);
@@ -32,9 +36,14 @@ const LoginPage = () => {
   const getOrderIdData = useAppSelector(
     (state) => state.reducer.sessionData.orderId
   );
-  
 
   const [submitOnClickDisable, setSubmitOnClickDisable] = useState(false);
+
+  useEffect(() => {
+    if (getSessionData) {
+      dispatch(fetchPaymentGateway(getSessionData));
+    }
+  }, [getSessionData, dispatch]);
 
   const formikData = useFormik({
     initialValues: {
@@ -172,7 +181,7 @@ const LoginPage = () => {
                 referencenumber: "",
                 groupid: "NA",
                 groupbooking: "N",
-                arrivalscheduleid: 450612,
+                arrivalscheduleid: 453912,
                 departurescheduleid: 0,
                 adulttickets: 1,
                 childtickets: 0,

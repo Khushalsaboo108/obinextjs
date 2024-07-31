@@ -1,3 +1,5 @@
+import { useAppSelector } from "./redux/store";
+
 export let VIPER_URL = `https://nigeriadev.reliablesoftjm.com/VIPERWS/`;
 
 export const VIPER_CONST = {
@@ -18,3 +20,7 @@ export function createRequestBody (sessionId : string, request :any ) {
         request: request,
     };
 };
+
+export const IS_PAYMENT_MODAL = "iframe";
+
+export const PRIVATE_AESKEY = "pnFCdYBqZwtbOSKvi8WGKA==";

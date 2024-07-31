@@ -19,8 +19,7 @@ const LoginPage = () => {
 
   const handleChange = async () => {
     const body = {
-      username: VIPER_CONST.alwaysOnUsername,
-      sessionid: VIPER_CONST.alwaysOnSessionid,
+      failstatus: 0,
       request: CUSTOMER_LOGIN,
     };
 
@@ -40,7 +39,7 @@ const LoginPage = () => {
       if (getStatus === 0) {
         router.push("/arrivalBooking");
       } else {
-        setStatusError(getdata.statusMessage)
+        setStatusError(getdata.statusMessage);
       }
     } catch (error) {
       setLoadingData(true);
