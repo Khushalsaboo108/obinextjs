@@ -31,16 +31,16 @@ const LoginPage = () => {
 
       console.log(`${VIPER_URL}login :`, getdata);
 
-      const sessionId = getdata.data.sessionid;
-      dispatch(setSessionId(sessionId));
+      // const sessionId = getdata.data.sessionid;
+      // dispatch(setSessionId(sessionId));
 
-      const getStatus = getdata.status;
+      // const getStatus = getdata.status;
 
-      if (getStatus === 0) {
-        router.push("/arrivalBooking");
-      } else {
-        setStatusError(getdata.statusMessage);
-      }
+      // if (getStatus === 0) {
+      //   // router.push("/arrivalBooking");
+      // } else {
+      //   setStatusError(getdata.statusMessage);
+      // }
     } catch (error) {
       setLoadingData(true);
       if (axios.isAxiosError(error)) {
