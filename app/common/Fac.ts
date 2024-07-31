@@ -287,7 +287,7 @@ export const processCreditCardPayment = async (
 
     console.log(`${VIPER_URL}getorderid :`, orderIdResponse);
 
-    const orderIdDataVar = await orderIdResponse.data.orderid;
+    const orderIdDataVar = await orderIdResponse?.data?.orderid;
 
     store.dispatch(orderIdData(orderIdDataVar));
 
@@ -298,12 +298,12 @@ export const processCreditCardPayment = async (
 
     if (
       !orderIdResponse ||
-      orderIdResponse.data.orderid === "" ||
-      orderIdResponse.data.orderid === null ||
-      orderIdResponse.status !== 0
+      orderIdResponse?.data?.orderid === "" ||
+      orderIdResponse?.data?.orderid === null ||
+      orderIdResponse?.status !== 0
     ) {
-      orderIdResponse.statusMessage &&
-        console.error("error", orderIdResponse.statusMessage);
+      orderIdResponse?.statusMessage &&
+        console.error("error", orderIdResponse?.statusMessage);
     } else {
       const requestAddConfirmationLog = {
         distributorid: "",
@@ -411,9 +411,9 @@ export const processCreditCardPayment = async (
 
       console.log(`${VIPER_URL}processcard :`, processCardResponse);
 
-      if (processCardResponse.status === 0) {
+      if (processCardResponse?.status === 0) {
         let facResponse;
-        if (processCardResponse.data?.html) {
+        if (processCardResponse?.data?.html) {
           facResponse = await facProcess3DSPayment(
             processCardResponse?.data.html
           );

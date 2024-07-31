@@ -49,10 +49,10 @@ const LoginPage = () => {
 
       console.log(`${VIPER_URL}setcontact :`, getData);
 
-      if (getData.status === 0) {
+      if (getData?.status === 0) {
         router.push("/payment");
       } else {
-        setStatusError(getData.statusMessage);
+        setStatusError(getData?.statusMessage);
       }
     } catch (error) {
       setLoadingData(true);

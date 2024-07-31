@@ -43,13 +43,13 @@ const ArrivalBookingPage = () => {
 
       console.log(`${VIPER_URL}reservecartitem`, getData);
 
-      const cartitemIdData = await getData.data.cartitemid;
+      const cartitemIdData = await getData?.cartitemid;
       dispatch(cartitemId(cartitemIdData));
 
-      if (getData.status === 0) {
+      if (getData?.status === 0) {
         router.push("/registration");
       } else {
-        setStatusError(getData.statusMessage);
+        setStatusError(getData?.statusMessage);
       }
     } catch (error) {
       setLoadingData(true);
@@ -83,8 +83,8 @@ const ArrivalBookingPage = () => {
 
       console.log(`${VIPER_URL}getschedule:`, getscheduleData);
       
-      if (getscheduleData.status !== 0) {
-        setStatusError(getscheduleData.statusMessage);
+      if (getscheduleData?.status !== 0) {
+        setStatusError(getscheduleData?.statusMessage);
       }
     } catch (error) {
       setLoadingData(true);

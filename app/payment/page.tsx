@@ -248,7 +248,7 @@ const LoginPage = () => {
 
           console.log(`${VIPER_URL}confirmcart `, res);
 
-          if (res.status === 0) {
+          if (res?.status === 0) {
             let successCurrencyCode = "USD";
             let successAmount = getAmount(
               paymentType,

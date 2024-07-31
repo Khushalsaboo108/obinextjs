@@ -243,9 +243,9 @@ export async function arrival(body: any) {
       };
     } else {
       customerLogindata = {
-        status : response.data.status,
+        status: response.data.status,
         statusMessage: response.data.statusMessage,
-      } 
+      };
     }
 
     return customerLogindata;
@@ -261,8 +261,18 @@ export async function arrivialBooking(requestFunction: any) {
       requestFunction
     );
 
+    let arrivalBookingData = {
+      username: response.data.username,
+      sessionid: response.data.sessionid,
+      status: response.data.status,
+      statusMessage: response.data.statusMessage,
+      severity: response.data.severity,
+      cartitemid: response.data.data.cartitemid,
+    };
+
     console.log(response.data);
-    return response.data;
+
+    return arrivalBookingData;
   } catch (error) {
     console.error(error);
   }
@@ -274,7 +284,16 @@ export async function getschedule(requestFunction: any) {
       `${VIPER_URL}getschedule`,
       requestFunction
     );
-    return response.data;
+
+    let getScheduleData = {
+      username: response.data.username,
+      sessionid: response.data.sessionid,
+      status: response.data.status,
+      statusMessage: response.data.statusMessage,
+      severity: response.data.severity,
+    };
+
+    return getScheduleData;
   } catch (error) {
     console.error(error);
   }
@@ -287,7 +306,25 @@ export async function contact(requestFunction: any) {
       requestFunction
     );
 
-    return response.data;
+    let SetContact = {
+      username: response.data.username,
+      sessionid: response.data.sessionid,
+      status: response.data.status,
+      statusMessage: response.data.statusMessage,
+      severity: response.data.severity,
+      data: {
+        contact: {
+          cartitemid: response.data.data.contact.cartitemid,
+          // title: "MR",
+          // firstname: "Khushal",
+          // lastname: "Saboo",
+          // email: "khushalsaboo108@gmail.com",
+          // phone: "06376135858",
+        },
+      },
+    };
+
+    return SetContact;
   } catch (error) {
     console.error(error);
   }
@@ -301,7 +338,21 @@ export async function orderId(requestFunction: any) {
       requestFunction
     );
     console.log("orderId", response.data);
-    return response.data;
+
+    const orderIdData = {
+      username: response.data.username,
+      sessionid: response.data.sessionid,
+      status: response.data.status,
+      statusMessage: response.data.statusMessage,
+      severity: response.data.severity,
+      data: {
+        orderid: response.data.data.orderid,
+        // transactionid: "396f17fb-12ab-4f24-bf9f-747b0c6acfe2",
+        // amount: 50,
+      },
+    };
+
+    return orderIdData;
   } catch (error) {
     console.error(error);
   }
@@ -315,7 +366,16 @@ export async function addconfirmationAPI(requestFunction: any) {
     );
     console.log("addconfirmationAPI", response.data);
     console.log("addconfirmationAPI body", requestFunction);
-    return response.data;
+
+    const confirmationData = {
+      username: response.data.username,
+      sessionid: response.data.sessionid,
+      status: response.data.status,
+      statusMessage: response.data.statusMessage,
+      severity: response.data.severity,
+    };
+
+    return confirmationData;
   } catch (error) {
     console.error(error);
   }
@@ -330,7 +390,17 @@ export async function processCard(requestProcesscard: any) {
     );
     console.log("processCard", response.data);
     console.log("processCard body", requestProcesscard);
-    return response.data;
+
+    const paymentData = {
+      username: response.data.username,
+      sessionid: response.data.sessionid,
+      status: response.data.status,
+      statusMessage: response.data.statusMessage,
+      severity: response.data.severity,
+      data: response.data.data,
+    };
+
+    return paymentData;
   } catch (error) {
     console.error(error);
   }
