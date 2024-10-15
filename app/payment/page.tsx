@@ -139,11 +139,7 @@ const LoginPage = () => {
 
           console.log("objPayment", objPayment);
 
-          if (
-            objPayment &&
-            objPayment.creditcard &&
-            objPayment.creditcard.authorizationnumber
-          ) {
+          if (responseCC.status === 0) {
             callConfirmCart = true;
           } else {
             setSubmitOnClickDisable(false);
@@ -181,7 +177,7 @@ const LoginPage = () => {
                 referencenumber: "",
                 groupid: "NA",
                 groupbooking: "N",
-                arrivalscheduleid: 453912,
+                arrivalscheduleid: 476775,
                 departurescheduleid: 0,
                 adulttickets: 1,
                 childtickets: 0,

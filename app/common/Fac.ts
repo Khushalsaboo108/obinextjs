@@ -318,7 +318,7 @@ export const processCreditCardPayment = async (
             referencenumber: "",
             groupid: "NA",
             groupbooking: "N",
-            arrivalscheduleid: 453912,
+            arrivalscheduleid: 476775,
             departurescheduleid: 0,
             adulttickets: 1,
             childtickets: 0,
